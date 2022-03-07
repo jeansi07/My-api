@@ -30,12 +30,12 @@ export const Details = ({ data }) => {
                 <tr>
 
                     <td>casos confirmados</td>
-                    <td></td>
+                    <td> {data.confirmed} </td>
                 </tr>
                 <tr>
 
                     <td>numeros de muertes actuales</td>
-                    <td></td>
+                    <td>{data.deaths} </td>
                 </tr>
 
 

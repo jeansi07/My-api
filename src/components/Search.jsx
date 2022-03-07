@@ -4,9 +4,11 @@ import { Details } from './Details';
 
 export const Search = () => {
 
+    const Swal = require('sweetalert2')
 
     const [countries, setCountries] = useState([])
-    const [country, setCountry] = useState(null)
+    //  const [country, setCountry] = useState(null)
+    const [data, setData] = useState({})
 
 
     useEffect(() => {
@@ -15,13 +17,39 @@ export const Search = () => {
                 setCountries(res.data)
 
             })
-
+        getData()
     }, [])
 
-    const findCountry = (country) => {
-        let details = countries.filter(c => c.country == country)
+    const getData = async (country = 'Colombia') => {
 
-        setCountry(details[0])
+
+
+        try {
+            const res = await fetch(`https://covid-api.mmediagroup.fr/v1/cases?country=${country}`, { method: 'GET' })
+            const response = await res.json()
+
+            if (response.All) {
+                setData(response.All)
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong!',
+                    footer: '<a href="">Why do I have this issue?</a>'
+                })
+            }
+        } catch (error) {
+
+        }
+
+    }
+
+    const findCountry = (countryy) => {
+        let { country } = countries.find(c => c.country == countryy)
+        console.log({ country });
+        getData(country)
+
+        //   setCountry(details[0])
     }
 
 
@@ -37,7 +65,7 @@ export const Search = () => {
                 ))}
 
             </select>
-            <Details data={country} />
+            <Details data={data} />
         </div>
     )
 }
